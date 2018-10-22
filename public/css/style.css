@@ -1,0 +1,27 @@
+#tablecontainer {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#calendartable td,th {
+    width: 300px;
+}
+
+#calendar tr td:first-child {
+    border-right: 1px solid rgba(0,0,0,0.12);
+    font-weight: bold;
+}
+
+.goodmoment:hover {
+    background-color: rgba(60, 60, 60, 0.5);
+    cursor: pointer;
+}
+
+.lunch {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+p {
+    margin: 0;
+}
