@@ -40,3 +40,14 @@
 p {
     margin: 0;
 }
+
+#addcalendar {
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+}
+
+#calendarslist li a{
+    font-size: 1.2em;
+    padding: 1em
+}

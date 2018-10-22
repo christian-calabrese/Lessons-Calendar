@@ -23,6 +23,10 @@ let LessonSchema = new mongoose.Schema({
     slice: {
         type: Number,
         require: true,
+    },
+    calendarid: {
+        type: String,
+        require: true
     }
 })
 

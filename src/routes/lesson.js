@@ -3,7 +3,10 @@ let LessonModel = require('../models/lesson.model')
 let router = express.Router()
 
 router.get('/lesson', (req, res) => {
-    LessonModel.find()
+    console.log("ID: " + req.query.calendarid)
+    LessonModel.find({
+        calendarid: req.query.calendarid
+    })
     .then(doc => {
         res.json(doc)
     })

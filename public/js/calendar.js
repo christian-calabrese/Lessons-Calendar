@@ -1,3 +1,5 @@
+var url = new URL(window.location.href);
+const id = url.searchParams.get("id");
 const startingtime = 9
 const lessonduration = 1
 const lunchtime = 13
@@ -9,7 +11,13 @@ const headcols = document.querySelectorAll('#calendartable thead tr th')
 let currtime = startingtime
 let dwschedule = new Array()
 var lessons = new Array()
-fetch('/lesson')
+fetch(`/lesson?calendarid=${id}`, {
+    method: 'get',
+    headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+    },
+    })
     .then(res=>res.json())
     .then((res) => {
         for(i = 0; i < timeslices + lunchduration; i++) {
@@ -53,7 +61,8 @@ function setClassOpt(slice, day) {
 }
 
 $('#setclassform').on('submit', (e) => {
-    var formData = new FormData(e.target);
+    var formData = new FormData(e.target)
+    formData.append("calendarid", id)
     var classdata = {};
 
     formData.forEach(function(value, key){
@@ -65,7 +74,6 @@ $('#setclassform').on('submit', (e) => {
     const wheretxt = cell.find('.where')
     
     if((!wheretxt[0].html) && (!classnametxt[0].html)) {
-        console.log("post")
         fetch('/lesson', {
             method: 'post',
             headers: {
@@ -73,10 +81,10 @@ $('#setclassform').on('submit', (e) => {
             'Content-Type': 'application/json'
             },
             body: JSON.stringify(classdata)
-            }).then(res=>res.json())
+            })
+            .then(res=>res.json())
             .then(res => console.log(res))  
     } else {
-        console.log("put")
         fetch('/lesson', {
             method: 'put',
             headers: {
