@@ -1,5 +1,6 @@
 let express = require('express')
 let CalendarModel = require('../models/calendar.model')
+let LessonModel = require('../models/lesson.model')
 let router = express.Router()
 
 router.get('/calendar', (req, res) => {
@@ -30,12 +31,13 @@ router.post('/calendar', (req, res) => {
 })
 
 router.delete('/calendar', (req, res) => {
-    console.log(req)
     if(!req.body._id) {
         return res.status(400).send("Missing url parameters")
     }
     CalendarModel.findOneAndRemove(req.body)
-    .then(doc => {
+    .then((doc) => {
+        LessonModel.deleteMany({calendarid: req.body._id})
+        .then(doc => res.json(doc))
         res.json(doc)
     })
     .catch(err => {

@@ -3,7 +3,7 @@ fetch('/calendar')
     .then((res) => {
         const list = document.getElementById('calendarslist')
         res.forEach((calendar) => {
-            $(list).append(`<li id = "${calendar._id}" class="collection-item"><div><a href = /calendar.html?id=${calendar._id}>Vai<span style = "color: black; font-size: 0.8em"> - ${calendar._id}</span></a><button style = "background: none; border: none; cursor: pointer; color: red" onclick = "deleteCalendar('${calendar._id}');" class="secondary-content"><i class="material-icons">delete</i></button></div></li>`)
+            $(list).append(`<li id = "${calendar._id}" class="collection-item"><div><a href = /calendar.html?id=${calendar._id}>See<span style = "color: black; font-size: 0.8em"> - ${calendar._id}</span></a><button style = "background: none; border: none; cursor: pointer; color: red" onclick = "deleteCalendar('${calendar._id}');" class="secondary-content"><i class="material-icons">delete</i></button></div></li>`)
         })
         $('#preload-container').hide()
     })
@@ -19,7 +19,7 @@ fetch('/calendar')
         .then(res=>res.json())
         .then((res) => {
             const list = document.getElementById('calendarslist')
-            $(list).append(`<li id = "${res._id}" class="collection-item"><div><a href = /calendar.html?id=${res._id}>Vai<span style = "color: black; font-size: 0.8em"> - ${res._id}</span></a><button style = "background: none; border: none; cursor: pointer; color: red" onclick = "deleteCalendar('${res._id}');" class="secondary-content"><i class="material-icons">delete</i></button></div></li>`)
+            $(list).append(`<li id = "${res._id}" class="collection-item"><div><a href = /calendar.html?id=${res._id}>See<span style = "color: black; font-size: 0.8em"> - ${res._id}</span></a><button style = "background: none; border: none; cursor: pointer; color: red" onclick = "deleteCalendar('${res._id}');" class="secondary-content"><i class="material-icons">delete</i></button></div></li>`)
         })
     }
 
