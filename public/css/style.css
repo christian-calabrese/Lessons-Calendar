@@ -19,6 +19,11 @@
     margin-right: auto;
 }
 
+#calendartable tr {
+    height: 75px;
+    min-height: 75px
+}
+
 #calendartable td,th {
     width: 300px;
 }
