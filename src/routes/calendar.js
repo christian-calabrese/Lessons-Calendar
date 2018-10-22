@@ -29,4 +29,18 @@ router.post('/calendar', (req, res) => {
         })
 })
 
+router.delete('/calendar', (req, res) => {
+    console.log(req)
+    if(!req.body._id) {
+        return res.status(400).send("Missing url parameters")
+    }
+    CalendarModel.findOneAndRemove(req.body)
+    .then(doc => {
+        res.json(doc)
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
+
 module.exports = router
