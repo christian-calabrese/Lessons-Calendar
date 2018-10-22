@@ -75,7 +75,7 @@ $('#setclassform').on('submit', (e) => {
     
     if((!wheretxt[0].html) && (!classnametxt[0].html)) {
         fetch('/lesson', {
-            method: 'post',
+            method: 'POST',
             headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
@@ -83,18 +83,13 @@ $('#setclassform').on('submit', (e) => {
             body: JSON.stringify(classdata)
             })
             .then(res=>res.json())
-            .then(res => console.log(res))  
     } else {
-        fetch('/lesson', {
-            method: 'put',
-            headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(classdata)
-            }).then(res=>res.json())
-            .then(res => console.log(res))
-        
+        fetch('/lesson', { method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify({day: day, slice: slice, calendarid: id}) })        
     }
     
     classnametxt.html(classdata.name)
@@ -106,3 +101,29 @@ $('#setclassform').on('submit', (e) => {
     $('#modal').modal('close'); 
     e.preventDefault()
 })
+
+function deleteLesson() {
+    const dayft = $('#day').val()
+    const sliceft = $('#slice').val()
+
+    let cell = $(`#${sliceft}-${dayft}`) 
+    cell.find('.classname').text("")
+    cell.find('.where').text("")
+
+    let lessondata = {day: dayft, slice: sliceft, calendarid: id}
+    console.log(lessondata)
+
+    fetch('/lesson', { method: 'DELETE',
+    headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(lessondata) })
+    .then((res) => {
+        $('#modal').modal('close')
+        $('#setclassform input').each(function( index ) {
+            $( this ).val("")
+        })
+    })
+    
+}

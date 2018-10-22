@@ -46,10 +46,14 @@ p {
     margin: 0;
 }
 
-#addcalendar {
-    position: absolute;
+#addcalendar, #backtohome {
+    position: fixed;
     right: 50px;
     bottom: 50px;
+}
+
+#backtohome {
+    left: 50px;
 }
 
 #calendarslist li a{

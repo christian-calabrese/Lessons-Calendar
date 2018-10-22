@@ -3,7 +3,7 @@ fetch('/calendar')
     .then((res) => {
         const list = document.getElementById('calendarslist')
         res.forEach((calendar) => {
-            $(list).append(`<li><a class="collection-item" href = /calendar.html?id=${calendar._id}>Vai</a></li>`)
+            $(list).append(`<li><a class="collection-item" href = /calendar.html?id=${calendar._id}>Vai<span style = "color: black; font-size: 0.8em"> - ${calendar._id}</span></a></li>`)
         })
         $('#preload-container').hide()
     })
@@ -19,6 +19,6 @@ fetch('/calendar')
         .then(res=>res.json())
         .then((res) => {
             const list = document.getElementById('calendarslist')
-            $(list).append(`<li><a class="collection-item" href = /calendar.html?id=${res._id}>Vai</a></li>`)
+            $(list).append(`<li><a class="collection-item" href = /calendar.html?id=${res._id}>Vai<span style = "color: black; font-size: 0.8em"> - ${res._id}</span></a></li>`)
         })
     }

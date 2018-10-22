@@ -3,7 +3,6 @@ let LessonModel = require('../models/lesson.model')
 let router = express.Router()
 
 router.get('/lesson', (req, res) => {
-    console.log("ID: " + req.query.calendarid)
     LessonModel.find({
         calendarid: req.query.calendarid
     })
@@ -43,6 +42,20 @@ router.put('/lesson', (req, res) => {
     }, req.body, {
         new: true
     })
+    .then(doc => {
+        res.json(doc)
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
+
+router.delete('/lesson', (req, res) => {
+    console.log(req)
+    if(!req.body.day || !req.body.slice || !req.body.calendarid) {
+        return res.status(400).send("Missing url parameters")
+    }
+    LessonModel.findOneAndRemove(req.body)
     .then(doc => {
         res.json(doc)
     })
