@@ -7,23 +7,38 @@ const table = document.querySelector('#calendar')
 const headcols = document.querySelectorAll('#calendartable thead tr th')
 
 let currtime = startingtime
-for(i = 0; i < timeslices + lunchduration; i++) {
-    let tr = document.createElement('tr')
-    tr.setAttribute("id", "" + i)
-
-    for(j = 0; j < headcols.length; j++) {
-        if(j == 0) {
-            tr.innerHTML += `<td id = "${i}-${j}">${currtime} - ${currtime + lessonduration}</td>`
-        } else {
-            tr.innerHTML += `<td class = "goodmoment" id = "${i}-${j}" onclick = "setClassOpt(${i}, ${j});"><p class = "classname">Process Control</p><p class = "where">Aula A2</p></td>`
+let dwschedule = new Array()
+var lessons = new Array()
+fetch('/lesson')
+    .then(res=>res.json())
+    .then((res) => {
+        for(i = 0; i < timeslices + lunchduration; i++) {
+            let tr = document.createElement('tr')
+            tr.setAttribute("id", "" + i)
+        
+            for(j = 0; j < headcols.length; j++) {
+                if(j == 0) {
+                    tr.innerHTML += `<td id = "${i}-${j}">${currtime} - ${currtime + lessonduration}</td>`
+                } else {
+                    let nameto = ""
+                    let whereto = ""
+                    res.forEach((obj) => {
+                        if(obj.slice == i && obj.day == j) {
+                            nameto = obj.name
+                            whereto = obj.where
+                        }
+                    })
+                    tr.innerHTML += `<td class = "goodmoment" id = "${i}-${j}" onclick = "setClassOpt(${i}, ${j});"><p class = "classname">${nameto}</p><p class = "where">${whereto}</p></td>`
+                }
+            }
+            if(currtime == lunchtime || (currtime > lunchtime && currtime < lunchtime + lunchduration)) {
+                tr.classList.add("lunch");
+            }
+            currtime += lessonduration;
+            table.appendChild(tr)
         }
-    }
-    if(currtime == lunchtime || (currtime > lunchtime && currtime < lunchtime + lunchduration)) {
-        tr.classList.add("lunch");
-    }
-    currtime += lessonduration;
-    table.appendChild(tr)
-}
+        $('#preload-container').hide()
+    })
 
 function setClassOpt(slice, day) {
     let cell = $(`#${slice}-${day}`)
@@ -38,23 +53,45 @@ function setClassOpt(slice, day) {
 }
 
 $('#setclassform').on('submit', (e) => {
-    
     var formData = new FormData(e.target);
     var classdata = {};
+
     formData.forEach(function(value, key){
         classdata[key] = value;
     });
-    console.log(classdata)
 
-    fetch('/lesson', {
-    method: 'post',
-    headers: {
-    'Accept': 'application/json, text/plain, */*',
-    'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(classdata)
-    }).then(res=>res.json())
-    .then(res => console.log(res));
+    let cell = $(`#${classdata.slice}-${classdata.day}`) 
+    const classnametxt = cell.find('.classname')
+    const wheretxt = cell.find('.where')
+    
+    if((!wheretxt[0].html) && (!classnametxt[0].html)) {
+        console.log("post")
+        fetch('/lesson', {
+            method: 'post',
+            headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(classdata)
+            }).then(res=>res.json())
+            .then(res => console.log(res))  
+    } else {
+        console.log("put")
+        fetch('/lesson', {
+            method: 'put',
+            headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(classdata)
+            }).then(res=>res.json())
+            .then(res => console.log(res))
+        
+    }
+    
+    classnametxt.html(classdata.name)
+    wheretxt.html(classdata.where)
+
     $('#setclassform input').each(function( index ) {
         $( this ).val("")
       })

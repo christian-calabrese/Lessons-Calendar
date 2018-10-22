@@ -1,3 +1,18 @@
+#preload-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.12)
+}
+
+.preloader-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
 #tablecontainer {
     width: 90%;
     margin-left: auto;
